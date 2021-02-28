@@ -2,19 +2,27 @@ package com.sandhi.controllers;
 
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Element;
@@ -22,20 +30,31 @@ import com.itextpdf.text.Font;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
-import com.sandhi.dao.NotesDao;
+import com.sandhi.dao.NotesDaoImpl;
+import com.sandhi.domain.EmailDto;
 import com.sandhi.domain.Note;
 
-
+@SessionAttributes("id")
 @Controller
 public class AppController 
 {
 	@Autowired
-	NotesDao notesDao;
+	private JavaMailSender mailSender;
+	
+	@Autowired
+	NotesDaoImpl notesDaoImpl;
 	
 	@RequestMapping("/")			
-	public String temp(Model model)
+	public String appStartPage()
 	{
-		List<Note> notes=notesDao.getAll();
+		return "index";			
+	}
+	
+	@RequestMapping("/home")			
+	public String allNotes(Model model)
+	{
+		List<Note> notes=notesDaoImpl.getAll();
+		Collections.reverse(notes);
 		model.addAttribute("notes",notes);
 		return "home";			
 	}
@@ -48,16 +67,39 @@ public class AppController
 		return "add_notes";			
 	}
 	@RequestMapping(value="/saveNote",method = RequestMethod.POST)
-	public String saveNote(@ModelAttribute("note") Note note,Model model)
+	public String saveNote(@Valid @ModelAttribute("note") Note note,BindingResult result,Model model)
 	{
-		note.setNoteDate(new Date());
-		notesDao.save(note);
-		return "home";
+		if(result.hasErrors())
+		{
+			return "add_notes";
+		}
+		else
+		{
+			if(note.getNoteId()==null)
+			{
+				note.setNoteDate(new Date());
+				notesDaoImpl.save(note);
+			}
+			else 
+			{
+				note.setNoteDate(new Date());
+				notesDaoImpl.update(note);
+			}
+			return "redirect:/home";
+		}
+		
+	}
+	@RequestMapping(value="/update",method = RequestMethod.GET)
+	public String updateNote(@RequestParam int id,Model model)
+	{
+		Note note=notesDaoImpl.get(id);
+		model.addAttribute("note",note);
+		return "add_notes";
 	}
 	@RequestMapping(value = "/download",method=RequestMethod.GET)
 	public void download(@RequestParam int id,HttpServletRequest request ,HttpServletResponse response) 
 	{
-		Note note=notesDao.get(id);
+		Note note=notesDaoImpl.get(id);
 		/*generating PDF*/
 		try {
 			Document document = new Document(PageSize.A4);
@@ -90,5 +132,59 @@ public class AppController
 		{
 			e.printStackTrace();
 		}
+	}
+	@RequestMapping(value = "/email")
+	public String sendEmail(@RequestParam int id,Model model)
+	{
+		model.addAttribute("emailDto",new EmailDto());
+		model.addAttribute("id",id);
+		return "emailForm";
+	}
+	@RequestMapping(value = "/process-email")
+	public String processEmail(@Valid @ModelAttribute("emailDto") EmailDto emailDto,BindingResult result,Model model)
+	{
+		if(result.hasErrors())
+		{
+			return "emailForm";
+		}
+		else 
+		{
+			Integer id=(Integer) model.getAttribute("id");
+			System.out.println(id);
+			Note note=notesDaoImpl.get(id);
+			System.out.println(emailDto.getUserEmail());
+			
+			SimpleMailMessage newEmail= new SimpleMailMessage();	
+			newEmail.setTo(emailDto.getUserEmail());																	//setting the users email
+			newEmail.setSubject(note.getNoteTitle());											//setting the subject
+			newEmail.setText(note.getNoteContent());	
+
+			mailSender.send(newEmail);          
+			
+			return "email-success";
+		}
+
+	}
+	@RequestMapping(value = "/about")
+	public String aboutApplication()
+	{
+		return "About";
+	}
+	
+	/*These Controllers are just me for me so that i can Delete offensive and sensitive notes*/
+	@RequestMapping(value = "/admin")
+	public String admin(Model model)
+	{
+
+		List<Note> notes=notesDaoImpl.getAll();
+		Collections.reverse(notes);
+		model.addAttribute("notes",notes);
+		return "admin";
+	}
+	@RequestMapping(value = "/delete")
+	public String delete(@RequestParam int id,Model model)
+	{
+		notesDaoImpl.delete(id);
+		return "redirect:/admin";
 	}
 }

@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Note 
@@ -14,22 +16,36 @@ public class Note
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer noteId;
+	
+	@Column(length = 40)
+	@Size(min=3, message = "* Your name should have minimum 3 charecters")
 	private String noteAuthor;
+	
+	@Size(min=3, message = "* Your name should have minimum 3 charecters")
+	@Column(length = 120)
 	private String noteTitle;
-	@Column(length = 1500)
+	
+	@NotBlank(message = "* Note Content cannot be blank")
+	@Column(length = 1400)
 	private String noteContent;
+	
 	private Date noteDate;
 	
 	public Note() {
 		super();
 	}
-	public Note(String noteTitle, String noteContent, Date noteDate) {
+	
+	
+	public Note(Integer noteId, String noteAuthor, String noteTitle, String noteContent, Date noteDate) {
 		super();
+		this.noteId = noteId;
+		this.noteAuthor = noteAuthor;
 		this.noteTitle = noteTitle;
 		this.noteContent = noteContent;
 		this.noteDate = noteDate;
 	}
-	
+
+
 	public Integer getNoteId() {
 		return noteId;
 	}

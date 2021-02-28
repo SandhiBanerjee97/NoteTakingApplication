@@ -8,38 +8,29 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <link href="/NoteTaker/URLToReachResourceFolder/css/style.css" rel="stylesheet">
 
-
-<title>Notes App</title>
+<title>Welcome</title>
 </head>
-<body>
+<body>						
 <%@include file="navbar.jsp"%>
-	<div class="container">
-	<h1 class="text-center headings">All Notes</h1>
-	<c:forEach items="${notes}" var="temp">
-		<div class="card mt-3 bkd">
-		<img class="card-image-top m-4" src="/NoteTaker/URLToReachResourceFolder/Image/post-it.png" alt="card image cap">
-			<div class="card-body">
-				<h3 class="card-title">
-					<c:out value="${temp.noteTitle}"></c:out>
-				</h3>
-				<div>
-				<p class="card-text">
-				    <b>Added By: </b><c:out value="${temp.noteAuthor}"></c:out><br>
-				    <b>On: </b><c:out value="${temp.noteDate}"></c:out>
-				</p>
-				<p class="card-text">
-					<c:out value="${temp.noteContent}"></c:out>
-				</p>
-				<div class="container text-center">
-					<a href="email?id=${temp.noteId}" class="btn btn-primary">EMail</a>
-					<a href="download?id=${temp.noteId}" class="btn btn-success">Download</a>
-					<a href="update?id=${temp.noteId}" class="btn btn-warning">Update</a>
-				</div>
-			</div>
+	<h1 class="text-center headings">Flying Notes</h1>
+	<h5 class="text-center headings">Save, Share and Download Notes Anywhere</h5>
+	<div class="card my-5">
+		<img  src="/NoteTaker/URLToReachResourceFolder/Image/post-it.png" class="img-fluid banner">
+		<h1 class="text-primary text-uppercase text-center mt-3">Start Taking Your Notes Today</h1>
+		<div class="container text-center">
+			<a href="/NoteTaker/home" class="btn btn-outline-primary text-center">Start Here</a>
 		</div>
+		<div class="alert alert-warning my-5" role="alert">
+  			Note, This Application is still under development. Security ,User Data
+  		    Management and Other Modules has not been implemented yet. It is recommended not 
+  			to post <span class="warn">"Private"</span> or <span class="warn">"Sensitive"</span> 
+  			content as every Note is visible and available for Download to other Users.HOWEVER 
+  			This Application can be used to <span class="works">take Small Notes</span> and
+  		    <span class="works">Download Notes as PDF</span> or <span class="works">Send Notes
+  		    </span> via Email.To Know more Check out About Section.
 		</div>
-	</c:forEach>
-	</div>
+	</div>	
+
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>

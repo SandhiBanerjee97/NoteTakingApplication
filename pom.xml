@@ -48,7 +48,28 @@
 			<artifactId>itextpdf</artifactId>
 			<version>5.5.13</version>
 		</dependency>
-
+		<dependency>							<!-- java mail api dependancy -->
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.4.7</version>
+		</dependency>
+		<dependency>							<!-- Support dependancy for mail api -->
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>5.2.2.RELEASE</version>
+		</dependency>
+		<dependency>						<!-- JSR form validation Dependancy -->
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>2.0.1.Final</version>
+		</dependency>
+		<!-- NOTE: "validation-api just gives us the specification for the validation ,the hybernate-validator is the implementation for 
+				that specification hence HIBERNATE-VALIDATOR must be INCLUDED along with " VALIDATION-API or else validation wont work-->
+		<dependency>
+			<groupId>org.hibernate</groupId>	<!-- Hibernate validator dependancy -->
+			<artifactId>hibernate-validator</artifactId>
+			<version>6.1.1.Final</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>NoteTaker</finalName>

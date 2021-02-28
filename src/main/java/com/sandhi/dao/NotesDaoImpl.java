@@ -1,5 +1,6 @@
 package com.sandhi.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -12,7 +13,7 @@ import org.hibernate.query.Query;
 import com.sandhi.domain.Note;
 
 @Component
-public class NotesDao 
+public class NotesDaoImpl 
 {
 	@Autowired
 	private SessionFactory sessionFactory;
@@ -41,5 +42,20 @@ public class NotesDao
 		List<Note> notes=q.list();
 		
 		return notes;
+	}
+	@Transactional
+	public void update(Note note)
+	{
+		Session session=sessionFactory.getCurrentSession();
+		Note newnote=new Note(note.getNoteId(),note.getNoteAuthor(),note.getNoteTitle(),note.getNoteContent(),new Date());
+		session.update(newnote);
+	}
+	
+	@Transactional
+	public void delete(int id)
+	{
+		Session session=sessionFactory.getCurrentSession();
+		Note temp=session.get(Note.class, id);
+		session.delete(temp);
 	}
 }
