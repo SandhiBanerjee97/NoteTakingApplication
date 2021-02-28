@@ -2,7 +2,7 @@
 
 A Note Taking Application ,which allows Users Add Note, Generate Download PDF ,and Send notes via Email. 
 
-Application->http://3.131.3.71:8080/NoteTaker/
+Application-http://3.131.3.71:8080/NoteTaker/
 
 **Technologies and libraries Used**
 
