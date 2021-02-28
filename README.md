@@ -26,11 +26,18 @@ Application-http://3.131.3.71:8080/NoteTaker/
 
 3. create a MYSQL database named "notes"
 
-4. open "/src/main/java/database.properties" and 
+4. open "/src/main/java/app.properties" and 
 
    ->set "userName" as YOUR database user name
    
    ->set "password" as YOUR database password
+   
+   ->set "mailHost" as YOUR desired Smtp Host Name
+   
+   ->set "mailUserName" as YOUR mail id that you want to use
+   
+   ->set "mailPassword" as YOUR mail id's password
+   
    
 5. Right Click on project-> SELECT Targete Runtimes -> SELECT Apache Tomcat
 
