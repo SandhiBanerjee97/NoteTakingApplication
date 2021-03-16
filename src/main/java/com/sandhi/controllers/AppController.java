@@ -171,27 +171,12 @@ public class AppController
 		return "About";
 	}
 	
-<<<<<<< HEAD
-=======
-	/*These Controllers are just me for me so that i can Delete offensive and sensitive notes*/
-	@RequestMapping(value = "/admin")
-	public String admin(Model model)
-	{
 
-		List<Note> notes=notesDaoImpl.getAll();
-		Collections.reverse(notes);
-		model.addAttribute("notes",notes);
-		return "admin";
-	}
->>>>>>> 7231560b00d48f6c7b9e237838a80becd23dbaa3
 	@RequestMapping(value = "/delete")
 	public String delete(@RequestParam int id,Model model)
 	{
 		notesDaoImpl.delete(id);
-<<<<<<< HEAD
 		return "redirect:/home";
-=======
-		return "redirect:/admin";
->>>>>>> 7231560b00d48f6c7b9e237838a80becd23dbaa3
+
 	}
 }
