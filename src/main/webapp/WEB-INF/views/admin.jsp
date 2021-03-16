@@ -31,16 +31,8 @@
 					<c:out value="${temp.noteContent}"></c:out>
 				</p>
 				<div class="container text-center">
-<<<<<<< HEAD
-					<a href="email?id=${temp.noteId}" class="btn btn-primary btn-sm">EMail</a>
-					<a href="download?id=${temp.noteId}" class="btn btn-success btn-sm">Download</a>
-					<a href="update?id=${temp.noteId}" class="btn btn-warning btn-sm">Update</a>
-					<a href="delete?id=${temp.noteId}" class="btn btn-danger btn-sm">Delete</a>
-=======
-					<a href="email?id=${temp.noteId}" class="btn btn-primary">EMail</a>
-					<a href="download?id=${temp.noteId}" class="btn btn-success">Download</a>
-					<a href="update?id=${temp.noteId}" class="btn btn-warning">Update</a>
->>>>>>> 7231560b00d48f6c7b9e237838a80becd23dbaa3
+					<a href="delete?id=${temp.noteId}" class="btn btn-danger">DELETE</a>
+					
 				</div>
 			</div>
 		</div>
